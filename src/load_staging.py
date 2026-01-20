@@ -5,6 +5,7 @@ Handles the Extract and Load phases of the ETL pipeline.
 
 import pandas as pd
 import os
+from psycopg2.extras import execute_batch
 from db_connection import DatabaseConnection
 
 
@@ -51,9 +52,8 @@ class StagingLoader:
             # Convert DataFrame to list of tuples
             records = [tuple(row) for row in df.values]
             
-            # Batch insert
-            for record in records:
-                self.db.cursor.execute(insert_query, record)
+            # Batch insert using execute_batch for better performance
+            execute_batch(self.db.cursor, insert_query, records, page_size=100)
             
             self.db.connection.commit()
             print(f"✓ Loaded {len(records)} rows into staging.{table_name}")
