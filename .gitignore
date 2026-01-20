@@ -26,7 +26,7 @@ wheels/
 # Environment variables
 .env
 
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp

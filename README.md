@@ -1,68 +1,88 @@
-# SalesETL - E-Commerce Data Warehouse ETL Pipeline
+# Sales Data Warehouse ETL Pipeline
 
-A complete end-to-end ETL (Extract, Transform, Load) pipeline that loads e-commerce sales data from CSV files into a PostgreSQL data warehouse with a star schema design.
+A junior data engineering project demonstrating a complete ETL pipeline for a retail/e-commerce sales data warehouse using PostgreSQL, SQL, and Python.
 
-## 🎯 Project Overview
+## 📋 Project Overview
 
-This project demonstrates a Junior Data Engineering workflow that includes:
-- Loading raw CSV data into staging tables
-- Transforming data into a star schema (dimensional model)
-- Data quality checks and logging
-- Dockerized PostgreSQL database
-- Automated pipeline execution
+This project implements a dimensional data warehouse for sales analytics using a star schema design. It includes:
+
+- **Sample retail/e-commerce datasets** (customers, products, orders)
+- **Staging layer** for raw data ingestion
+- **Star schema warehouse** with fact and dimension tables
+- **Python ETL pipeline** for automated data loading and transformation
+- **Power BI connectivity** for business intelligence reporting
+
+## 🏗️ Architecture
+
+```
+CSV Files (data/)
+    ↓
+Staging Tables (staging schema)
+    ↓
+Transformations (SQL)
+    ↓
+Data Warehouse (warehouse schema)
+    ↓
+Power BI / Analytics Tools
+```
+
+### Data Model
+
+**Star Schema Components:**
+
+**Fact Table:**
+- `fact_sales` - Contains sales transactions with measures (quantity, amounts, profit)
+
+**Dimension Tables:**
+- `dim_customer` - Customer information
+- `dim_product` - Product catalog with pricing and margins
+- `dim_date` - Date dimension with calendar attributes
+- `dim_payment` - Payment method types
 
 ## 📁 Project Structure
 
 ```
 SalesETL/
-├── data/
-│   └── sales.csv              # Sample e-commerce sales dataset
-├── sql/
-│   ├── 01_create_staging.sql  # Create staging tables
-│   ├── 02_create_dwh.sql      # Create data warehouse schema
-│   └── 03_transform.sql       # Transform staging to DWH
-├── etl/
-│   ├── load_staging.py        # Load CSV into staging tables
-│   └── run_pipeline.py        # Main ETL orchestrator
-├── notebooks/                  # For ad-hoc analysis (empty)
-├── docker-compose.yml         # PostgreSQL container setup
-├── requirements.txt           # Python dependencies
-├── Makefile                   # Automation commands
-├── .env.example              # Environment variables template
-└── README.md                 # This file
+├── data/                          # Sample CSV datasets
+│   ├── customers.csv             # Customer information
+│   ├── products.csv              # Product catalog
+│   └── orders.csv                # Order transactions
+├── sql/                           # SQL scripts
+│   ├── 01_create_staging_tables.sql      # Staging schema
+│   ├── 02_create_warehouse_schema.sql    # Star schema
+│   └── 03_transform_to_warehouse.sql     # ETL transformations
+├── src/                           # Python ETL code
+│   ├── db_connection.py          # Database utilities
+│   ├── load_staging.py           # Staging loader
+│   ├── transform_warehouse.py    # Warehouse transformer
+│   └── etl_pipeline.py           # Main orchestrator
+├── requirements.txt               # Python dependencies
+├── .env.example                   # Environment configuration template
+└── README.md                      # This file
 ```
-
-## 🗄️ Data Warehouse Schema
-
-The data warehouse follows a **star schema** design:
-
-### Dimension Tables
-- **dim_date**: Date dimension with year, month, day, quarter, etc.
-- **dim_customer**: Customer information (SCD Type 1)
-- **dim_product**: Product catalog with categories
-  
-### Fact Table
-- **fact_sales**: Sales transactions with measures (quantity, unit_price, total_amount)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Docker and Docker Compose
-- Python 3.8+
-- Make (optional, but recommended)
+- **PostgreSQL** 12+ installed and running
+- **Python** 3.8+ installed
+- **pip** package manager
 
-### Step 1: Clone the Repository
+### Installation
 
+1. **Clone the repository:**
 ```bash
 git clone https://github.com/datorrado/SalesETL.git
 cd SalesETL
 ```
 
-### Step 2: Set Up Environment Variables
+2. **Install Python dependencies:**
+```bash
+pip install -r requirements.txt
+```
 
-Copy the example environment file and update if needed:
-
+3. **Configure database connection:**
 ```bash
 cp .env.example .env
 ```
@@ -183,127 +203,151 @@ ORDER BY d.year, d.month;
 
 ## 📈 Connecting Power BI
 
-To connect Power BI Desktop to the fact_sales table:
+### Step 1: Install PostgreSQL Connector
 
-1. **Open Power BI Desktop**
+In Power BI Desktop:
+1. Go to **Get Data** → **Database** → **PostgreSQL database**
+2. If prompted, install the PostgreSQL connector
 
-2. **Get Data** → **PostgreSQL database**
+### Step 2: Connect to Database
 
-3. **Enter Connection Details**:
-   - Server: `localhost:5432`
-   - Database: `sales_dwh`
+1. **Server:** `localhost:5432`
+2. **Database:** `sales_dw`
+3. **Data Connectivity mode:** Import (recommended) or DirectQuery
 
-4. **Database Credentials**:
-   - User: `etl_user`
-   - Password: `etl_password`
+### Step 3: Authenticate
 
-5. **Navigator**: Select tables from `dwh` schema:
-   - `dim_date`
-   - `dim_customer`
-   - `dim_product`
-   - `fact_sales`
+- **User name:** `postgres` (or your DB user)
+- **Password:** Your PostgreSQL password
 
-6. **Load or Transform** the data
+### Step 4: Load Tables
 
-7. **Create Relationships** (if not auto-detected):
-   - `fact_sales[date_key]` → `dim_date[date_id]`
-   - `fact_sales[customer_key]` → `dim_customer[customer_key]`
-   - `fact_sales[product_key]` → `dim_product[product_key]`
+Select tables from the `warehouse` schema:
+- ✅ `fact_sales` (main fact table)
+- ✅ `dim_customer`
+- ✅ `dim_product`
+- ✅ `dim_date`
+- ✅ `dim_payment`
 
-### Recommended Power BI Visualizations
+### Step 5: Create Relationships (if not auto-detected)
 
-- **Sales Over Time**: Line chart with date hierarchy
-- **Sales by Category**: Pie or bar chart
-- **Top Customers**: Table with customer name and revenue
-- **Geographic Distribution**: Map visual with country and revenue
-- **KPI Cards**: Total Revenue, Total Orders, Average Order Value
+Power BI should automatically detect relationships based on foreign keys:
 
-## 🛠️ Makefile Commands
-
-| Command | Description |
-|---------|-------------|
-| `make help` | Show available commands |
-| `make up` | Start PostgreSQL container |
-| `make down` | Stop PostgreSQL container |
-| `make etl` | Run the complete ETL pipeline |
-| `make clean` | Stop containers and remove volumes |
-| `make logs` | Show PostgreSQL logs |
-| `make status` | Check container status |
-
-## 🧹 Cleanup
-
-To stop the database and remove all data:
-
-```bash
-make clean
+```
+fact_sales.customer_key → dim_customer.customer_key
+fact_sales.product_key  → dim_product.product_key
+fact_sales.date_key     → dim_date.date_key
+fact_sales.payment_key  → dim_payment.payment_key
 ```
 
-Or using Docker Compose:
-```bash
-docker-compose down -v
-```
+### Step 6: Build Visualizations
 
-## 📝 Sample Data
+**Suggested measures to create:**
+- Total Sales: `SUM(fact_sales[net_amount])`
+- Total Profit: `SUM(fact_sales[profit_amount])`
+- Profit Margin: `SUM(fact_sales[profit_amount]) / SUM(fact_sales[net_amount])`
+- Order Count: `DISTINCTCOUNT(fact_sales[order_id])`
 
-The `data/sales.csv` file contains 50 sample e-commerce orders with:
-- **Order Information**: order_id, order_date
-- **Customer Data**: customer_id, customer_name, country
-- **Product Data**: product_id, product_name, category
-- **Sales Metrics**: quantity, unit_price
+**Suggested visualizations:**
+- Sales by Category (Column Chart)
+- Monthly Sales Trend (Line Chart)
+- Top Products by Revenue (Bar Chart)
+- Customer Geographic Distribution (Map)
+- Profit Margin by Product (KPI Cards)
 
-## 🔧 Troubleshooting
+## 🛠️ Database Schema Details
 
-### PostgreSQL Connection Issues
+### Staging Schema (`staging`)
 
-If you can't connect to PostgreSQL:
+Raw data landing zone with minimal transformation:
+- `staging.customers` - Customer master data
+- `staging.products` - Product catalog
+- `staging.orders` - Order transactions
 
-1. Check if the container is running:
-   ```bash
-   make status
-   ```
+### Warehouse Schema (`warehouse`)
 
-2. Check logs:
-   ```bash
-   make logs
-   ```
+Optimized star schema for analytics:
 
-3. Verify the port 5432 is not in use:
-   ```bash
-   lsof -i :5432
-   ```
+**Dimensions:**
+- `dim_customer` - SCD Type 1 customer dimension
+- `dim_product` - Product dimension with margin calculations
+- `dim_date` - Calendar dimension with attributes
+- `dim_payment` - Payment method lookup
 
-### ETL Pipeline Errors
+**Fact:**
+- `fact_sales` - Grain: One row per order line
+  - Measures: quantity, amounts, costs, profit
+  - Foreign keys to all dimensions
 
-- Ensure `.env` file exists with correct credentials
-- Verify PostgreSQL is running and healthy
-- Check Python dependencies are installed
-- Review logs for detailed error messages
+## 🔄 ETL Process Details
 
-## 📚 Technologies Used
+### Extract
+- Reads CSV files from `data/` directory
+- Uses pandas for data handling
+- Validates data structure
 
-- **Python 3.12**: ETL scripting and data processing
-- **PostgreSQL 15**: Data warehouse database
-- **Docker**: Containerization
-- **pandas**: CSV data handling
-- **psycopg2**: PostgreSQL database adapter
-- **python-dotenv**: Environment variable management
+### Load (Staging)
+- Truncates existing staging tables
+- Bulk loads data into PostgreSQL
+- Creates indexes for transformation performance
 
-## 🎓 Learning Outcomes
+### Transform
+- Populates dimension tables with business logic
+- Calculates derived metrics (margins, profits)
+- Loads fact table with denormalized measures
+- Enforces referential integrity
+
+## 📝 Notes for Developers
+
+### Extending the Pipeline
+
+**Add new data sources:**
+1. Create new CSV file in `data/`
+2. Add staging table in `01_create_staging_tables.sql`
+3. Update `load_staging.py` to include new file
+4. Modify warehouse schema if needed
+
+**Add new dimensions/facts:**
+1. Update `02_create_warehouse_schema.sql`
+2. Add transformation logic in `03_transform_to_warehouse.sql`
+3. Test queries before running pipeline
+
+### Error Handling
+
+The ETL pipeline includes:
+- Database connection validation
+- Transaction rollback on errors
+- Detailed error messages
+- Step-by-step progress tracking
+
+## 🎯 Learning Objectives
 
 This project demonstrates:
-- ✅ ETL pipeline development
-- ✅ Star schema design (dimensional modeling)
-- ✅ SQL DDL and DML operations
-- ✅ Python database connectivity
-- ✅ Docker containerization
-- ✅ Environment configuration
-- ✅ Logging and error handling
-- ✅ Automation with Makefiles
+
+✅ **Data Modeling** - Star schema design for analytics  
+✅ **SQL Skills** - DDL, DML, joins, aggregations, window functions  
+✅ **Python ETL** - pandas, psycopg2, modular code design  
+✅ **Database Design** - Schemas, indexes, constraints  
+✅ **Data Pipeline** - Staging → Transformation → Warehouse  
+✅ **BI Integration** - Connecting analytics tools to data warehouse
+
+## 🤝 Contributing
+
+This is a learning project. Feel free to:
+- Add more sample data
+- Extend the data model
+- Add data quality checks
+- Implement scheduling (Airflow, cron)
+- Add unit tests
 
 ## 📄 License
 
 This project is open source and available for educational purposes.
 
-## 👨‍💻 Author
+## 📧 Contact
 
-Created as a Junior Data Engineering portfolio project.
+For questions or suggestions, please open an issue on GitHub.
+
+---
+
+**Happy Data Engineering! 🚀**
