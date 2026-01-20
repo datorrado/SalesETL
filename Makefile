@@ -16,16 +16,16 @@ help:
 # Start PostgreSQL container
 up:
 	@echo "Starting PostgreSQL container..."
-	docker-compose up -d
+	docker compose up -d
 	@echo "Waiting for PostgreSQL to be ready..."
 	@sleep 5
 	@echo "PostgreSQL is ready!"
-	@docker-compose ps
+	@docker compose ps
 
 # Stop PostgreSQL container
 down:
 	@echo "Stopping PostgreSQL container..."
-	docker-compose down
+	docker compose down
 
 # Run ETL pipeline
 etl:
@@ -39,14 +39,14 @@ etl:
 # Clean up everything (stop containers and remove volumes)
 clean:
 	@echo "Cleaning up containers and volumes..."
-	docker-compose down -v
+	docker compose down -v
 	@echo "Cleanup complete!"
 
 # Show PostgreSQL logs
 logs:
-	docker-compose logs -f postgres
+	docker compose logs -f postgres
 
 # Check container status
 status:
 	@echo "Container status:"
-	@docker-compose ps
+	@docker compose ps
