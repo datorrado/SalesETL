@@ -87,101 +87,118 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Edit `.env` file with your PostgreSQL credentials:
+Default configuration:
 ```
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=sales_dw
-DB_USER=postgres
-DB_PASSWORD=your_password
+DB_NAME=sales_dwh
+DB_USER=etl_user
+DB_PASSWORD=etl_password
 ```
 
-### Running the ETL Pipeline
-
-**Option 1: Run complete pipeline (recommended)**
-```bash
-python src/etl_pipeline.py
-```
-
-This will:
-1. Create the database (if it doesn't exist)
-2. Create staging tables and load CSV data
-3. Create warehouse schema (star schema)
-4. Transform and load data into warehouse
-5. Verify data and show sample results
-
-**Option 2: Run individual steps**
-
-Load staging tables only:
-```bash
-python src/load_staging.py
-```
-
-Transform to warehouse only (after staging is loaded):
-```bash
-python src/transform_warehouse.py
-```
-
-## 📊 Sample Data
-
-The project includes realistic sample data:
-
-- **20 customers** across various US cities
-- **20 products** in categories (Electronics, Furniture, Stationery)
-- **50 orders** with transactions from July-August 2023
-
-You can modify the CSV files in the `data/` directory to use your own data.
-
-## 🔍 Querying the Data Warehouse
-
-### Connect to PostgreSQL
+### Step 3: Install Python Dependencies
 
 ```bash
-psql -h localhost -U postgres -d sales_dw
+pip install -r requirements.txt
 ```
 
-### Example Queries
+### Step 4: Start PostgreSQL
 
-**Total sales by product category:**
+Using Make:
+```bash
+make up
+```
+
+Or using Docker Compose directly:
+```bash
+docker-compose up -d
+```
+
+Wait a few seconds for PostgreSQL to be ready.
+
+### Step 5: Run the ETL Pipeline
+
+Using Make:
+```bash
+make etl
+```
+
+Or run Python directly:
+```bash
+python3 etl/run_pipeline.py
+```
+
+## 📊 Pipeline Steps
+
+The ETL pipeline executes the following steps:
+
+1. **Create Staging Tables** - Creates `staging.sales` table
+2. **Create Data Warehouse Schema** - Creates dimension and fact tables
+3. **Load Staging** - Loads CSV data into staging tables
+4. **Transform Data** - Transforms and loads data into the star schema
+
+## ✅ Verify Results
+
+### Using PostgreSQL Client
+
+Connect to the database:
+```bash
+docker exec -it sales_etl_postgres psql -U etl_user -d sales_dwh
+```
+
+### Sample Queries
+
+#### Check Record Counts
+```sql
+-- Staging table
+SELECT COUNT(*) FROM staging.sales;
+
+-- Dimensions
+SELECT COUNT(*) FROM dwh.dim_date;
+SELECT COUNT(*) FROM dwh.dim_customer;
+SELECT COUNT(*) FROM dwh.dim_product;
+
+-- Fact table
+SELECT COUNT(*) FROM dwh.fact_sales;
+```
+
+#### Sales by Category
 ```sql
 SELECT 
-    dp.category,
-    SUM(fs.net_amount) as total_sales,
-    SUM(fs.profit_amount) as total_profit,
-    COUNT(*) as order_count
-FROM warehouse.fact_sales fs
-JOIN warehouse.dim_product dp ON fs.product_key = dp.product_key
-GROUP BY dp.category
-ORDER BY total_sales DESC;
+    p.category,
+    COUNT(*) as order_count,
+    SUM(f.quantity) as total_quantity,
+    SUM(f.total_amount) as total_revenue
+FROM dwh.fact_sales f
+JOIN dwh.dim_product p ON f.product_key = p.product_key
+GROUP BY p.category
+ORDER BY total_revenue DESC;
 ```
 
-**Monthly sales trend:**
+#### Sales by Country
 ```sql
 SELECT 
-    dd.year,
-    dd.month,
-    dd.month_name,
-    SUM(fs.net_amount) as monthly_sales,
-    COUNT(DISTINCT fs.order_id) as order_count
-FROM warehouse.fact_sales fs
-JOIN warehouse.dim_date dd ON fs.date_key = dd.date_key
-GROUP BY dd.year, dd.month, dd.month_name
-ORDER BY dd.year, dd.month;
+    c.country,
+    COUNT(DISTINCT c.customer_key) as customer_count,
+    SUM(f.total_amount) as total_revenue
+FROM dwh.fact_sales f
+JOIN dwh.dim_customer c ON f.customer_key = c.customer_key
+GROUP BY c.country
+ORDER BY total_revenue DESC;
 ```
 
-**Top customers by revenue:**
+#### Monthly Sales Trend
 ```sql
 SELECT 
-    dc.full_name,
-    dc.city,
-    dc.state,
-    SUM(fs.net_amount) as total_spent,
-    COUNT(DISTINCT fs.order_id) as order_count
-FROM warehouse.fact_sales fs
-JOIN warehouse.dim_customer dc ON fs.customer_key = dc.customer_key
-GROUP BY dc.full_name, dc.city, dc.state
-ORDER BY total_spent DESC
-LIMIT 10;
+    d.year,
+    d.month,
+    d.month_name,
+    COUNT(*) as order_count,
+    SUM(f.total_amount) as total_revenue
+FROM dwh.fact_sales f
+JOIN dwh.dim_date d ON f.date_key = d.date_id
+GROUP BY d.year, d.month, d.month_name
+ORDER BY d.year, d.month;
 ```
 
 ## 📈 Connecting Power BI

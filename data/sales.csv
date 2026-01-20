@@ -1,0 +1,51 @@
+order_id,order_date,customer_id,customer_name,product_id,product_name,category,country,quantity,unit_price
+1001,2024-01-15,501,John Smith,2001,Laptop Pro 15,Electronics,USA,1,1299.99
+1002,2024-01-15,502,Emma Johnson,2002,Wireless Mouse,Electronics,USA,2,29.99
+1003,2024-01-16,503,Michael Brown,2003,USB-C Cable,Electronics,Canada,3,15.99
+1004,2024-01-16,504,Sarah Davis,2004,Office Chair,Furniture,UK,1,299.99
+1005,2024-01-17,505,James Wilson,2005,Standing Desk,Furniture,USA,1,599.99
+1006,2024-01-17,501,John Smith,2006,Notebook Set,Office Supplies,USA,5,12.99
+1007,2024-01-18,506,Linda Martinez,2007,Mechanical Keyboard,Electronics,Germany,1,159.99
+1008,2024-01-18,507,Robert Anderson,2008,Monitor 27inch,Electronics,USA,2,399.99
+1009,2024-01-19,508,Patricia Taylor,2009,Ergonomic Mouse Pad,Office Supplies,France,3,24.99
+1010,2024-01-19,509,David Thomas,2010,Desk Lamp LED,Electronics,USA,1,45.99
+1011,2024-01-20,510,Maria Garcia,2001,Laptop Pro 15,Electronics,Spain,1,1299.99
+1012,2024-01-20,502,Emma Johnson,2011,Printer Paper Pack,Office Supplies,USA,10,8.99
+1013,2024-01-21,511,Christopher Lee,2012,Webcam HD,Electronics,Canada,1,89.99
+1014,2024-01-21,512,Jessica White,2013,Whiteboard,Office Supplies,UK,1,79.99
+1015,2024-01-22,513,Daniel Harris,2014,Book Shelf,Furniture,USA,1,149.99
+1016,2024-01-22,501,John Smith,2015,Pen Set Premium,Office Supplies,USA,2,19.99
+1017,2024-01-23,514,Jennifer Clark,2016,Headphones Wireless,Electronics,Germany,1,199.99
+1018,2024-01-23,515,Matthew Lewis,2017,Desk Organizer,Office Supplies,USA,4,22.99
+1019,2024-01-24,516,Amanda Walker,2018,External SSD 1TB,Electronics,France,1,129.99
+1020,2024-01-24,517,Joshua Hall,2004,Office Chair,Furniture,USA,2,299.99
+1021,2024-01-25,518,Ashley Allen,2019,Tablet 10inch,Electronics,Canada,1,449.99
+1022,2024-01-25,519,Andrew Young,2020,HDMI Cable,Electronics,UK,5,12.99
+1023,2024-01-26,520,Melissa King,2021,Power Strip,Electronics,USA,2,34.99
+1024,2024-01-26,503,Michael Brown,2022,Filing Cabinet,Furniture,Canada,1,199.99
+1025,2024-01-27,521,Ryan Wright,2023,Desk Mat Large,Office Supplies,Germany,1,39.99
+1026,2024-01-27,522,Stephanie Lopez,2024,Conference Phone,Electronics,USA,1,299.99
+1027,2024-01-28,523,Brandon Hill,2025,Stapler Heavy Duty,Office Supplies,Spain,3,15.99
+1028,2024-01-28,524,Nicole Scott,2001,Laptop Pro 15,Electronics,USA,1,1299.99
+1029,2024-01-29,525,Justin Green,2026,Document Scanner,Electronics,France,1,179.99
+1030,2024-01-29,526,Rachel Adams,2027,Coffee Maker,Office Supplies,USA,1,89.99
+1031,2024-01-30,504,Sarah Davis,2028,Training Table,Furniture,UK,2,349.99
+1032,2024-01-30,527,Tyler Baker,2029,Portable Charger,Electronics,USA,3,45.99
+1033,2024-01-31,528,Lauren Nelson,2030,Sticky Notes Pack,Office Supplies,Canada,8,6.99
+1034,2024-01-31,529,Kevin Carter,2007,Mechanical Keyboard,Electronics,USA,1,159.99
+1035,2024-02-01,530,Samantha Mitchell,2031,Smart Speaker,Electronics,Germany,1,99.99
+1036,2024-02-01,531,Brian Perez,2032,Desk Drawer Unit,Furniture,USA,1,129.99
+1037,2024-02-02,502,Emma Johnson,2033,Calendar Wall,Office Supplies,USA,1,14.99
+1038,2024-02-02,532,Brittany Roberts,2034,USB Hub 7-Port,Electronics,UK,2,39.99
+1039,2024-02-03,533,Jonathan Turner,2035,Paper Shredder,Electronics,France,1,119.99
+1040,2024-02-03,534,Megan Phillips,2036,Bulletin Board,Office Supplies,USA,1,29.99
+1041,2024-02-04,535,Nicholas Campbell,2005,Standing Desk,Furniture,Spain,1,599.99
+1042,2024-02-04,536,Kimberly Parker,2037,Label Maker,Electronics,USA,1,69.99
+1043,2024-02-05,501,John Smith,2038,Calculator Desktop,Office Supplies,USA,1,24.99
+1044,2024-02-05,537,Eric Evans,2039,Laptop Stand,Electronics,Canada,1,49.99
+1045,2024-02-06,538,Michelle Edwards,2040,Magazine Holder,Office Supplies,Germany,2,18.99
+1046,2024-02-06,539,Steven Collins,2008,Monitor 27inch,Electronics,USA,1,399.99
+1047,2024-02-07,540,Laura Stewart,2041,Storage Cabinet,Furniture,UK,1,249.99
+1048,2024-02-07,541,Jason Sanchez,2042,Bluetooth Speaker,Electronics,USA,1,79.99
+1049,2024-02-08,542,Sarah Morris,2043,Desk Pad Leather,Office Supplies,France,1,44.99
+1050,2024-02-08,543,Jeffrey Rogers,2044,Office Table,Furniture,USA,1,399.99

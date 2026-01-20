@@ -37,10 +37,12 @@ wheels/
 .DS_Store
 Thumbs.db
 
-# Jupyter Notebooks
-.ipynb_checkpoints
-
-# Temporary files
+# Logs
 *.log
-tmp/
-temp/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+notebooks/.ipynb_checkpoints/
+
+# PostgreSQL data
+postgres_data/
